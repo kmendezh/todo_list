@@ -6,10 +6,10 @@ import ReactDOM from "react-dom";
 import "bootstrap";
 
 //include your index.scss file into the bundle
-import "../styles/index.scss";
+import "../styles/index.css";
 
 //import your own components
-import { Home } from "./component/home.js";
+import { Todo } from "./component/todo.js";
 
 //render your react application
-ReactDOM.render(<Home />, document.querySelector("#app"));
+ReactDOM.render(<Todo />, document.querySelector("#app"));
