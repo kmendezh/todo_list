@@ -2,3 +2,41 @@ body {
     background-color:black;
     font-style: "Advent Pro";
 }
+
+.heading {
+	color: rgb(216, 191, 216);
+	font-size: 60px;
+	text-align: center;
+};
+
+.todoList {
+    background-color: rgb(230,230,230);
+    margin: auto;
+    width: 30%;
+	height: 600px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    margin-top: 100px;
+    justify-content: center;
+}
+
+.rowContainer {
+	flex-direction: column;
+	flex-wrap: wrap;
+	justify-content: center;
+	margin: auto;
+	margin-top: 0;
+	background-color: white;
+};
+
+.xbutton
+{
+    color: white;
+    cursor: pointer;
+}
+
+.xbutton:hover
+{
+    color: rgb(190, 190, 190);
+}

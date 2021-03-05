@@ -1,64 +1,63 @@
 import React, { useState } from "react";
+import "/workspace/todo_list/src/styles/index.css";
 
-let defaultData = ["Row 1", "Row 2"];
+// Array used to store the list items
+let list_Items = ["Row 1", "Row 2"];
 
-const todoList = {
-	backgroundColor: "rgb(230,230,230)",
-	margin: "auto",
-	width: "30%",
-	height: "400px",
-	display: "flex",
-	flexDirection: "column",
-	flexWrap: "wrap",
-	marginTop: "100px",
-	justifyContent: "center"
-};
-
-const heading = {
-	color: "rgb(216, 191, 216)",
-	fontSize: "60px",
-	textAlign: "center"
-};
-
-const rowContainer = {
-	flexDirection: "column",
-	flexWrap: "wrap",
-	justifyContent: "center",
-	margin: "auto",
-	backgroundColor: "white",
-	flexShrink: "3"
-};
-
-const rowElement = {
-	height: "50px"
-};
-
+// Todo Tag function
 export function Todo() {
 	const test = event => {
-		list.push(event.target.value);
-		list = list.map(item => (
-			<tr key={item.toString()}>
+		if (event.target.value != "") {
+			list_Items.push(event.target.value);
+			list = list_Items.map((item, index) => (
+				<tr key={index.toString()}>
+					<td>{item}</td>
+				</tr>
+			));
+			setList(list);
+			console.log(list);
+		}
+	};
+
+	const test2 = id => {
+		let tmpArray = [];
+		let counterArray = 0;
+		console.log(id);
+		for (let i = 0; i < list_Items.length; i++) {
+			if (i != id) {
+				tmpArray[counterArray] = list_Items[i];
+				counterArray++;
+			}
+		}
+
+		list_Items = tmpArray;
+		list = list_Items.map((item, index) => (
+			<tr key={index.toString()}>
 				<td>{item}</td>
 			</tr>
 		));
 		setList(list);
-		console.log(list);
 	};
 
-	let [list, setList] = useState(defaultData);
+	let [list, setList] = useState(list_Items);
 	return (
-		<div style={todoList}>
-			<h1 style={heading}> todos </h1>
-			<div style={rowContainer}>
+		<div className="todoList">
+			<h1 className="heading"> todos </h1>
+			<div className="rowContainer">
 				<table>
 					<tr>
 						<td>
 							<input type="text" onClick={test} />
 						</td>
 					</tr>
-					{list.map(item => (
-						<tr key={item.toString()}>
+					{list.map((item, index) => (
+						<tr key={index.toString()}>
 							<td>{item}</td>
+							<td
+								className="xbutton"
+								onClick={() => test2(index)}>
+								x
+							</td>
 						</tr>
 					))}
 				</table>
