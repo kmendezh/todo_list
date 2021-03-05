@@ -3,6 +3,11 @@ body {
     font-style: "Advent Pro";
 }
 
+tr{
+
+    border: 1px solid rgb(221, 221, 221);
+}
+
 .heading {
 	color: rgb(216, 191, 216);
 	font-size: 60px;
@@ -21,13 +26,30 @@ body {
     justify-content: center;
 }
 
+.tableStyle
+{
+    border: 1px solid rgb(221, 221, 221);
+    color: rgb(134, 134, 134);
+    width: 100%;
+    padding: 20px;
+    border-collapse: collapse;
+}
+
+.inputStyle 
+{
+    border:0;
+    outline: none;
+    color: rgb(134, 134, 134);
+}
+
 .rowContainer {
 	flex-direction: column;
 	flex-wrap: wrap;
 	justify-content: center;
 	margin: auto;
 	margin-top: 0;
-	background-color: white;
+    background-color: white;
+    width: 70%;
 };
 
 .xbutton
