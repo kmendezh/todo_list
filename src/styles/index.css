@@ -1,6 +1,8 @@
+@import url("https://fonts.googleapis.com/css?family=Trirong");
+
 body {
     background-color:black;
-    font-style: "Advent Pro";
+    font-family: "Trirong";
 }
 
 tr{
@@ -16,19 +18,21 @@ td
 .heading {
 	color: rgb(216, 191, 216);
 	font-size: 60px;
-	text-align: center;
+    text-align: center;
+    font-style: "Advent Pro";
 };
 
 .todoList {
     background-color: rgb(230,230,230);
     margin: auto;
     width: 30%;
-	height: 600px;
+	min-height: 600px;
     display: flex;
     flex-direction: column;
     flex-wrap: wrap;
     margin-top: 100px;
     justify-content: center;
+
 }
 
 .tableStyle
@@ -44,6 +48,8 @@ td
     border:0;
     outline: none;
     color: rgb(134, 134, 134);
+    font-family: "Trirong";
+    
 }
 
 .rowContainer {

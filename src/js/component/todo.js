@@ -2,13 +2,21 @@ import React, { useState } from "react";
 import "/workspace/todo_list/src/styles/index.css";
 
 // Array used to store the list items
-let list_Items = ["No tasks, add a task"];
+let list_Items = [];
+
+// Global variables
+let isTheListEmpty = 1;
 
 // Todo Tag function
 export function Todo() {
+	alert("");
 	// Function used to add elements to the list
 	const addElement = event => {
 		if (event.target.value != "") {
+			if (isTheListEmpty == 1) {
+				list_Items.pop();
+				isTheListEmpty = 0;
+			}
 			list_Items.push(event.target.value);
 			list = list_Items.map((item, index) => (
 				<tr key={index.toString()}>
@@ -58,6 +66,7 @@ export function Todo() {
 								type="text"
 								onClick={addElement}
 								className="inputStyle"
+								placeholder="Agregue tareas a la lista..."
 							/>
 						</td>
 					</tr>
