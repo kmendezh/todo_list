@@ -9,7 +9,6 @@ let isTheListEmpty = 1;
 
 // Todo Tag function
 export function Todo() {
-	alert("");
 	// Function used to add elements to the list
 	const addElement = event => {
 		if (event.target.value != "") {
@@ -57,7 +56,7 @@ export function Todo() {
 	let [list, setList] = useState(list_Items);
 	return (
 		<div className="todoList">
-			<h1 className="heading"> todos </h1>
+			<h1 className="heading"> TODO List </h1>
 			<div className="rowContainer">
 				<table className="tableStyle">
 					<tr>
