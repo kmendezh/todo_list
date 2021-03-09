@@ -1,11 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "/workspace/todo_list/src/styles/index.css";
 
 // Array used to store the list items
 let list_Items = [];
+let listFetchItems = [];
 
 // Global variables
 let isTheListEmpty = 1;
+let url = "https://assets.breatheco.de/apis/fake/todos/user/kmendezh?=";
+
+// Fetch options
+let myHeaders = new Headers();
+myHeaders.append("Content-Type", "application/json");
+
+let getRequestOptions = {
+	headers: myHeaders
+};
 
 // Todo Tag function
 export function Todo() {
@@ -54,6 +64,20 @@ export function Todo() {
 	};
 
 	let [list, setList] = useState(list_Items);
+
+	// Get the TODO List
+	useEffect(() => {
+		fetch(url, getRequestOptions)
+			.then(response => response.json())
+			.then(result => {
+				listFetchItems = result;
+				console.log(result);
+				console.log(typeof result);
+				console.log(listFetchItems);
+			})
+			.catch(error => console.log("error", error));
+	});
+
 	return (
 		<div className="todoList">
 			<h1 className="heading"> TODO List </h1>
