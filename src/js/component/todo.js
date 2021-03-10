@@ -14,7 +14,23 @@ let myHeaders = new Headers();
 myHeaders.append("Content-Type", "application/json");
 
 let getRequestOptions = {
-	headers: myHeaders
+	method: "GET",
+	headers: myHeaders,
+	redirect: "follow"
+};
+
+let putRequestOptions = {
+	method: "PUT",
+	headers: myHeaders,
+	body: [],
+	redirect: "follow"
+};
+
+let postRequestOptions = {
+	method: "POST",
+	headers: myHeaders,
+	body: JSON.stringify([]),
+	redirect: "follow"
 };
 
 // Todo Tag function
@@ -22,12 +38,12 @@ export function Todo() {
 	// Function used to add elements to the list
 	const addElement = event => {
 		if (event.target.value != "") {
-			if (isTheListEmpty == 1) {
+			/*if (isTheListEmpty == 1) {
 				list_Items.pop();
 				isTheListEmpty = 0;
-			}
-			list_Items.push(event.target.value);
-			list = list_Items.map((item, index) => (
+			}*/
+			listFetchItems.push(event.target.value);
+			list = listFetchItems.map((item, index) => (
 				<tr key={index.toString()}>
 					<td>{item}</td>
 					<td
@@ -37,6 +53,20 @@ export function Todo() {
 					</td>
 				</tr>
 			));
+			// PUT Command
+			// PUT - Body
+			let tmpArray = [];
+			for (let i = 0; i < listFetchItems.length; i++) {
+				let tmpObj = { label: "", done: false };
+				tmpObj.label = listFetchItems[i];
+				tmpArray.push(tmpObj);
+			}
+
+			// Update the List
+			putRequestOptions.body = JSON.stringify(tmpArray);
+
+			putFetch();
+			// Update the screen view
 			setList(list);
 		}
 	};
@@ -44,15 +74,15 @@ export function Todo() {
 	const removeElement = id => {
 		let tmpArray = [];
 		let counterArray = 0;
-		for (let i = 0; i < list_Items.length; i++) {
+		for (let i = 0; i < listFetchItems.length; i++) {
 			if (i != id) {
-				tmpArray[counterArray] = list_Items[i];
+				tmpArray[counterArray] = listFetchItems[i];
 				counterArray++;
 			}
 		}
 
-		list_Items = tmpArray;
-		list = list_Items.map((item, index) => (
+		listFetchItems = tmpArray;
+		list = listFetchItems.map((item, index) => (
 			<tr key={index.toString()}>
 				<td>{item}</td>
 				<td className="xbutton" onClick={() => removeElement(index)}>
@@ -60,6 +90,23 @@ export function Todo() {
 				</td>
 			</tr>
 		));
+
+		// PUT Command
+		// PUT - Body
+		tmpArray = [];
+		// Skip if the list is empty
+		if (listFetchItems.length > 0) {
+			for (let i = 0; i < listFetchItems.length; i++) {
+				let tmpObj = { label: "", done: false };
+				tmpObj.label = listFetchItems[i];
+				tmpArray.push(tmpObj);
+			}
+		}
+		// Update the List
+		putRequestOptions.body = JSON.stringify(tmpArray);
+		putFetch();
+
+		// Update the screen view
 		setList(list);
 	};
 
@@ -68,15 +115,40 @@ export function Todo() {
 	// Get the TODO List
 	useEffect(() => {
 		fetch(url, getRequestOptions)
-			.then(response => response.json())
-			.then(result => {
-				listFetchItems = result;
-				console.log(result);
-				console.log(typeof result);
-				console.log(listFetchItems);
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				}
+
+				// If no List was detected, POST a new one
+				else if (response.status == 404) {
+					return postFetch();
+				} else {
+					return response.json();
+				}
 			})
-			.catch(error => console.log("error", error));
-	});
+			.then(result => {
+				for (let i = 0; i < result.length; i++) {
+					listFetchItems[i] = result[i].label;
+				}
+
+				// Update the elements on the screen
+				list = listFetchItems.map((item, index) => (
+					<tr key={index.toString()}>
+						<td>{item}</td>
+						<td
+							className="xbutton"
+							onClick={() => removeElement(index)}>
+							x
+						</td>
+					</tr>
+				));
+				setList(list);
+			})
+			.catch(error => {
+				console.log("error", error);
+			});
+	}, []);
 
 	return (
 		<div className="todoList">
@@ -101,4 +173,21 @@ export function Todo() {
 			</div>
 		</div>
 	);
+}
+
+// PUT Function
+
+function putFetch() {
+	fetch(url, putRequestOptions)
+		.then(response => response.text())
+		.then(result => console.log(result))
+		.catch(error => console.log("error", error));
+}
+
+// POST Function
+function postFetch() {
+	fetch(url, postRequestOptions)
+		.then(response => response.text())
+		.then(result => console.log(result))
+		.catch(error => console.log("error", error));
 }
