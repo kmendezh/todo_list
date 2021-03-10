@@ -62,6 +62,22 @@ td
     width: 70%;
 };
 
+.deleteButton {
+
+    background-color: rgb(26, 75, 28);
+    margin: auto;
+    font-family: "Trirong";
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    border: 3px;
+}
+
+.deleteButton:hover{
+    background-color: rgb(14, 133, 18);
+}
+
+
 .xbutton
 {
     color: white;

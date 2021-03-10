@@ -6,7 +6,6 @@ let list_Items = [];
 let listFetchItems = [];
 
 // Global variables
-let isTheListEmpty = 1;
 let url = "https://assets.breatheco.de/apis/fake/todos/user/kmendezh?=";
 
 // Fetch options
@@ -33,15 +32,23 @@ let postRequestOptions = {
 	redirect: "follow"
 };
 
+let deleteRequestOptions = {
+	method: "DELETE",
+	headers: myHeaders,
+	redirect: "follow"
+};
+
 // Todo Tag function
 export function Todo() {
+	// Function used to delete and update the list
+	const deleteAndUpdate = () => {
+		deleteFetch();
+		setList(listFetchItems);
+	};
+
 	// Function used to add elements to the list
 	const addElement = event => {
 		if (event.target.value != "") {
-			/*if (isTheListEmpty == 1) {
-				list_Items.pop();
-				isTheListEmpty = 0;
-			}*/
 			listFetchItems.push(event.target.value);
 			list = listFetchItems.map((item, index) => (
 				<tr key={index.toString()}>
@@ -94,17 +101,21 @@ export function Todo() {
 		// PUT Command
 		// PUT - Body
 		tmpArray = [];
-		// Skip if the list is empty
+		// Update the list if it is not empty
 		if (listFetchItems.length > 0) {
 			for (let i = 0; i < listFetchItems.length; i++) {
 				let tmpObj = { label: "", done: false };
 				tmpObj.label = listFetchItems[i];
 				tmpArray.push(tmpObj);
 			}
+			// Update the List
+			putRequestOptions.body = JSON.stringify(tmpArray);
+			putFetch();
 		}
-		// Update the List
-		putRequestOptions.body = JSON.stringify(tmpArray);
-		putFetch();
+		// Otherwise, delete the list
+		else {
+			deleteFetch();
+		}
 
 		// Update the screen view
 		setList(list);
@@ -171,12 +182,17 @@ export function Todo() {
 					</tr>
 				</table>
 			</div>
+			<button
+				type="button"
+				className="deleteButton"
+				onClick={deleteAndUpdate}>
+				Delete All Tasks
+			</button>
 		</div>
 	);
 }
 
 // PUT Function
-
 function putFetch() {
 	fetch(url, putRequestOptions)
 		.then(response => response.text())
@@ -190,4 +206,13 @@ function postFetch() {
 		.then(response => response.text())
 		.then(result => console.log(result))
 		.catch(error => console.log("error", error));
+}
+
+// Delete Function
+function deleteFetch() {
+	fetch(url, deleteRequestOptions)
+		.then(response => response.text())
+		.then(result => postFetch())
+		.catch(error => console.log("error", error));
+	listFetchItems = [];
 }
